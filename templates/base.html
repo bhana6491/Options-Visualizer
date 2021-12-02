@@ -381,7 +381,14 @@
                                     if (window.myChart != null) {
                                         window.myChart.destroy();
                                     }
-
+                                    correct_colors = [];
+                                    if (optionType === "Calls" && optionMethod == "Buying" || optionType === "Puts" && optionMethod == "Writing") {
+                                        correct_colors = ["red", "red", "red", "black", "green", "green", "green"]
+                                    }
+                                    else if(optionType === "Calls" && optionMethod == "Writing" || optionType === "Puts" && optionMethod == "Buying")
+                                    {
+                                        correct_colors = ["green", "green", "green","black", "red", "red", "red"];
+                                    }
 
 
                                     // window.myChart = new Chart(ctx, {
@@ -395,13 +402,7 @@
                                             data: window.data,
                                             // data: [{x: downside2, y: -10915}, {x: downside1, y: -10915}, {x: strike, y: -10915}, {x: call_BE, y: 0}, {x: upside2, y: 500}],
 
-                                            backgroundColor: [
-                                                'red',
-                                                'red',
-                                                'red',
-                                                'black',
-                                                'green',
-                                            ],
+                                            backgroundColor: correct_colors,
                                             borderColor: [
                                                 'black',
                                                 'black',
