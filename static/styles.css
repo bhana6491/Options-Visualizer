@@ -13,14 +13,35 @@
     color:white; 
 }
 .search-bar{
-    text-align: center;
-    margin-top: 30vh;
+    /* text-align: center;
+    margin-top: 30vh; */
+    width: 30%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  
+  
 }
 
-
+i{
+    color:black;
+}
 .submit{
+    /* text-align: center;
+    background-color: white; */
+    width: 5em;
+    height: 5.6rem;
     text-align: center;
-    background-color: white;
+    color: #fff;
+    background-color: white; 
+    border-radius: 0 20px 20px 0;
+    cursor: pointer;
+    outline: black; 
+    font-size: 20px;
+    position: relative;
+    left: -108px; 
+    bottom: 3.5px; 
 }
 .search-button{
     margin-left:0;
@@ -32,7 +53,9 @@
 }
 .main-div, body{
     height: 100vh; 
-
+    /* display: flex; */
+    width: 100%; 
+    position: relative;
 background: hsla(239, 39%, 38%, 1);
 
 background: linear-gradient(315deg, hsla(239, 39%, 38%, 1) 0%, hsla(190, 68%, 50%, 1) 94%);
@@ -57,24 +80,29 @@ filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#3B3C88", en
     filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#3B3C88", endColorstr="#28B8D5", GradientType=1 );
     }
 
-.submit{
+/* .submit{
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border:solid 2px black;
     height: 96px;
     margin-left: -7px; 
 
-}
+} */
 
-.form-inline{
+/* .form-inline{
     display: flex;
     flex-flow: row wrap;
     align-items: center;
   
-}
+} */
 .input-div{
-margin: auto; 
-}
+    width: 60%;
+    position: relative;
+    display: flex;
+    margin: auto
+    ;
+  
+  }
 input[type = 'text']
 {
     font-family: 'DM Sans', sans-serif;
@@ -155,11 +183,15 @@ margin: 0
 }
 
 .search{
-    margin-left: 2%;
-    margin-top:2%;
-    font-size: 2em;
+    width: 100%;
+    border-right: none;
+    padding: 5px;
+    height: 1.5em;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: black;
+    margin-top: 40em;
 }
-
 .submit-2{
     border-radius: 40px;
     background-color:#185ADB;
