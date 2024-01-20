@@ -8,9 +8,8 @@ final_call = []
 final_put =[]
 expiry_list = []
 price = []
-def scrape(ticker):
-
-    url = "https://www.marketwatch.com/investing/stock/" + ticker +  "/options"
+def scrape(tkr):
+    url = "https://www.marketwatch.com/investing/stock/" + tkr +  "/options"
     page = requests.get(url)
     if (page.url == url):
 
@@ -90,4 +89,4 @@ def scrape(ticker):
         return 0
 
 if __name__ == "__main__":
-    scraper.py
+    scrape()

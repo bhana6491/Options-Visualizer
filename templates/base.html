@@ -40,21 +40,21 @@
             </div>
             <div>
 
-                <form action="/main" method="POST">
+                <form action={{ticker}} method="POST">
 
                     <h3 class="selection-headings">Expiry: </h3>
                     {%for i in range(dates|length)%}
                     <div class="form-check form-check-inline dates">
 
                         {% if i == expiry %}
-                        <input class="form-check-input" type="radio" name="exampleRadios" id="dates"
+                        <input class="form-check-input" type="radio" name="expiry" id="dates"
                             value="{{ dates[i] }}" checked>
                         <label class="form-check-label" for="exampleRadios">
                             {{dates[i]}}
                         </label>
 
                         {% else %}
-                        <input class="form-check-input" type="radio" name="exampleRadios" id="dates"
+                        <input class="form-check-input" type="radio" name="expiry" id="dates"
                             value="{{ dates[i] }}">
                         <label class="form-check-label" for="exampleRadios">
                             {{dates[i]}}
@@ -67,15 +67,15 @@
                         <h3 class="selection-headings"> Type: </h3>
                         <div class="form-check form-check-inline">
 
-                            <input class="form-check-input" type="radio" name="exampleRadios2" id="call"
-                                value="type-option1" {{type1}}>
+                            <input class="form-check-input" type="radio" name="type" id="call"
+                                value="call" {{call}}>
                             <label class="form-check-label" for="exampleRadios">Call</label>
 
                         </div>
                         <div class="form-check form-check-inline">
 
-                            <input class="form-check-input" type="radio" name="exampleRadios2" id="put"
-                                value="type-option2" {{type2}}>
+                            <input class="form-check-input" type="radio" name="type" id="put"
+                                value="put" {{put}}>
                             <label class="form-check-label" for="exampleRadios">Put</label>
 
                         </div>
@@ -84,14 +84,14 @@
                     <div>
                         <h3 class="selection-headings">Strategy: </h3>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="exampleRadios3" id="buy"
-                                value="strat-option1" {{strat1}}>
+                            <input class="form-check-input" type="radio" name="strategy" id="buy"
+                                value="buy" {{buy}}>
                             <label class="form-check-label" for="exampleRadios">Buy</label>
                         </div>
                         <div class="form-check form-check-inline">
 
-                            <input class="form-check-input" type="radio" name="exampleRadios3" id="write"
-                                value="strat-option2" {{strat2}}>
+                            <input class="form-check-input" type="radio" name="strategy" id="write"
+                                value="write" {{write}}>
                             <label class="form-check-label" for="exampleRadios">Write</label>
 
                         </div>
@@ -134,14 +134,14 @@
                     <table id="table" cellpadding="0" cellspacing="0" border="0">
                         <tbody>
 
-                            {%for i in range(0, ticker_dict|length)%}
+                            {%for i in range(0, options_chain|length)%}
                             <tr class="data">
-                                <td id="row-{{i}}-strike"><a>{{ticker_dict[i][0]}}</a></td>
-                                <td id="row-{{i}}-bid"><a>{{ticker_dict[i][3]}}</a></td>
-                                <td id="row-{{i}}-ask"><a>{{ticker_dict[i][4]}}</a></td>
-                                <td id="row-{{i}}-last"><a>{{ticker_dict[i][1]}}</a></td>
-                                <td id="row-{{i}}-change"><a>{{ticker_dict[i][2]}}</a></td>
-                                <td id="row-{{i}}-volume"><a>{{ticker_dict[i][5]}}</a></td>
+                                <td id="row-{{i}}-strike"><a>{{options_chain[i][0]}}</a></td>
+                                <td id="row-{{i}}-bid"><a>{{options_chain[i][3]}}</a></td>
+                                <td id="row-{{i}}-ask"><a>{{options_chain[i][4]}}</a></td>
+                                <td id="row-{{i}}-last"><a>{{options_chain[i][1]}}</a></td>
+                                <td id="row-{{i}}-change"><a>{{options_chain[i][2]}}</a></td>
+                                <td id="row-{{i}}-volume"><a>{{options_chain[i][5]}}</a></td>
                             </tr>
                             {%endfor%}
 
@@ -149,36 +149,12 @@
                     </table>
 
                 </div>
-                <!-- <div style = "text-align: center; font-size: 2.5em; margin-top: 3%">
-
-                <button id = "graph-options" onclick="updateChart()" class = "submit-2" type="submit">Graph Options</button>
-           </div> -->
 
             </div>
         </div>
 
 
         <div id="main-div-3">
-            <script>
-                $(window).on("load resize ", function () {
-                    var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
-                    $('.tbl-header').css({
-                        'padding-right': scrollWidth
-                    });
-                }).resize();
-
-                function updateChart(range) {
-                    const rangeValue = window.labels.slice(0, range.value);
-                    console.log(rangeValue)
-                    myChart.config.data.labels = rangeValue;
-                    window.myChart.update();
-                };
-            </script>
-
-
-            <div>
-                <h1 id="loser"></h1>
-            </div>
 
             <div class="chart-container" style="position: relative; height:50em; width:80em; margin: auto">
                 <canvas id="window.myChart"></canvas>
@@ -187,341 +163,13 @@
                         value="7" min="5" max="7">
                 </div>
             </div>
-            <script>
-                $(document).ready(function () {
-
-                        function selectedRow() {
-
-                            var index,
-                                table = document.getElementById("table");
-                            for (var i = 0; i < table.rows.length; i++) {
-                                table.rows[i].onclick = function () {
-                                    $(".slider").show();
-
-
-                                    var clicked;
-                                    // remove the background from the previous selected row
-                                    if (typeof index !== "undefined") {
-                                        table.rows[index].classList.toggle("selected");
-                                    }
-                                    // get the selected row index
-                                    index = this.rowIndex;
-                                    // add class selected to the row
-                                    this.classList.toggle("selected");
-                                    clicked = index;
-                                    console.log(clicked)
-
-
-                                    var option_num;
-                                    option_num = clicked;
-                                    document.getElementById('main-div-3').scrollIntoView(true);
-                                    var optionType = $('#call').is(':checked');
-                                    var optionMethod = $('#buy').is(':checked');
-
-
-
-
-
-
-                                    option_num = clicked;
-                                    var strike;
-                                    var bid;
-                                    var ask;
-                                    var call_buy_BE;
-                                    var put_buy_BE;
-                                    var call_write_BE;
-                                    var put_write_BE;
-                                    var call_buy_profit;
-                                    var put_buy_profit;
-                                    var call_write_profit;
-                                    var put_write_profit;
-                                    var upside1;
-                                    var upside2;
-                                    var upside3;
-                                    var upside4;
-                                    var downside1;
-                                    var downside2;
-                                    var downside3;
-                                    var downside4;
-                                    var profit;
-                                    var loss;
-                                    strike = document.getElementById('row-' + option_num + '-strike');
-                                    bid = document.getElementById('row-' + option_num + '-bid');
-                                    ask = document.getElementById('row-' + option_num + '-ask');
-                                    strike = strike.innerText;
-                                    bid = bid.innerText;
-                                    ask = ask.innerText;
-
-
-
-
-
-
-                                    var expiry_date;
-                                    expiry_date = "{{dates[expiry]}} "
-
-
-
-
-                                    if (optionType == true) {
-                                        optionType = "Calls";
-                                    } else {
-                                        optionType = "Puts"
-                                    }
-                                    if (optionMethod == true) {
-                                        optionMethod = "Buying"
-                                    } else {
-                                        optionMethod = "Writing"
-                                    }
-
-                                    if (optionType === "Calls") {
-                                        if (optionMethod === "Buying") {
-                                            call_buy_BE = parseFloat(strike) + parseFloat(ask);
-                                            upside2 = call_buy_BE * 1.02;
-                                            upside3 = upside2 * 1.02;
-                                            upside4 = upside3 * 1.02;
-                                            downside1 = strike - (strike * 0.1);
-                                            downside2 = downside1 - (strike * 0.1);
-                                            loss = -Math.abs(ask * 100);
-                                            // call_buy_profit = Math.abs(("{{price}}" - upside2) *100);
-
-                                            upside1 = Number.parseFloat(upside1).toFixed(2);
-                                            upside2 = Number.parseFloat(upside2).toFixed(2);
-                                            upside3 = Number.parseFloat(upside3).toFixed(2);
-                                            upside4 = Number.parseFloat(upside4).toFixed(2);
-
-                                            downside1 = Number.parseFloat(downside1).toFixed(2);
-                                            downside2 = Number.parseFloat(downside2).toFixed(2);
-                                            window.labels = [downside2, downside1, strike, call_buy_BE, upside2,
-                                                upside3, upside4
-                                            ]
-                                            window.data = [loss, loss, loss, 0, Math.abs((upside2 -
-                                                "{{price}}") * 100), Math.abs((upside3 - "{{price}}") *
-                                                100), Math.abs((upside4 - "{{price}}") * 100)]
-
-                                        } else {
-                                            call_write_BE = parseFloat(strike) + parseFloat(bid);
-                                            upside2 = call_write_BE * 1.02;
-                                            upside3 = upside2 * 1.02;
-                                            upside4 = upside3 * 1.02;
-                                            downside1 = strike - (strike * 0.1);
-                                            downside2 = downside1 - (downside1 * 0.1);
-                                            call_write_profit = Math.abs(bid * 100);
-                                            upside1 = Number.parseFloat(upside1).toFixed(2);
-                                            upside2 = Number.parseFloat(upside2).toFixed(2);
-                                            upside3 = Number.parseFloat(upside3).toFixed(2);
-                                            upside4 = Number.parseFloat(upside4).toFixed(2);
-                                            downside1 = Number.parseFloat(downside1).toFixed(2);
-                                            downside2 = Number.parseFloat(downside2).toFixed(2);
-                                            window.labels = [downside2, downside1, strike, call_write_BE,
-                                                upside2, upside3, upside4
-                                            ]
-                                            window.data = [call_write_profit, call_write_profit,
-                                                call_write_profit, 0, -Math.abs((upside2 - "{{price}}") *
-                                                    100), -Math.abs((upside3 - "{{price}}") * 100), -Math
-                                                .abs((upside4 - "{{price}}") * 100)
-                                            ]
-                                        }
-                                    } else {
-                                        if (optionMethod === "Buying") {
-                                            put_buy_BE = parseFloat(strike) - parseFloat(ask);
-                                            upside2 = strike * 1.02;
-                                            upside3 = upside2 * 1.02;
-                                            upside4 = upside3 * 1.02;
-                                            downside1 = put_buy_BE - (put_buy_BE * 0.1);
-                                            downside2 = downside1 - (downside1 * 0.1);
-                                            downside3 = downside2 - (downside2 * 0.1);
-                                            loss = -Math.abs(ask * 100);
-                                            upside1 = Number.parseFloat(upside1).toFixed(2);
-                                            upside2 = Number.parseFloat(upside2).toFixed(2);
-                                            upside3 = Number.parseFloat(upside3).toFixed(2);
-                                            upside4 = Number.parseFloat(upside4).toFixed(2);
-                                            downside1 = Number.parseFloat(downside1).toFixed(2);
-                                            downside2 = Number.parseFloat(downside2).toFixed(2);
-                                            downside3 = Number.parseFloat(downside3).toFixed(2);
-
-                                            window.labels = [downside3, downside2, downside1, put_buy_BE,
-                                                strike, upside2, upside3
-                                            ]
-                                            window.data = [Math.abs((downside3 - "{{price}}") * 100), Math.abs((
-                                                downside2 - "{{price}}") * 100), Math.abs((downside1 -
-                                                "{{price}}") * 100), 0, loss, loss, loss]
-
-                                        } else {
-                                            put_write_BE = parseFloat(strike) - parseFloat(bid);
-                                            upside2 = strike * 1.02;
-                                            upside3 = upside2 * 1.02;
-                                            upside4 = upside3 * 1.02;
-                                            downside1 = put_write_BE - (put_write_BE * 0.1);
-                                            downside2 = downside1 - (downside1 * 0.1);
-                                            downside3 = downside2 - (downside2 * 0.1);
-                                            put_write_profit = Math.abs(bid * 100)
-                                            upside1 = Number.parseFloat(upside1).toFixed(2);
-                                            upside2 = Number.parseFloat(upside2).toFixed(2);
-                                            upside3 = Number.parseFloat(upside3).toFixed(2);
-                                            upside4 = Number.parseFloat(upside4).toFixed(2);
-                                            downside1 = Number.parseFloat(downside1).toFixed(2);
-                                            downside2 = Number.parseFloat(downside2).toFixed(2);
-                                            downside3 = Number.parseFloat(downside3).toFixed(2);
-                                            window.labels = [downside3, downside2, downside1, put_write_BE,
-                                                strike, upside2, upside3
-                                            ]
-                                            window.data = [-Math.abs((downside3 - "{{price}}") * 100), -Math
-                                                .abs((downside2 - "{{price}}") * 100), -Math.abs((
-                                                    downside1 - "{{price}}") * 100), 0, put_write_profit,
-                                                put_write_profit, put_write_profit
-                                            ]
-                                        }
-
-                                    }
-
-
-
-
-                                    if (window.myChart != null) {
-                                        window.myChart.destroy();
-                                    }
-                                    correct_colors = [];
-                                    if (optionType === "Calls" && optionMethod == "Buying" || optionType === "Puts" && optionMethod == "Writing") {
-                                        correct_colors = ["red", "red", "red", "black", "green", "green", "green"]
-                                    }
-                                    else if(optionType === "Calls" && optionMethod == "Writing" || optionType === "Puts" && optionMethod == "Buying")
-                                    {
-                                        correct_colors = ["green", "green", "green","black", "red", "red", "red"];
-                                    }
-
-
-                                    // window.myChart = new Chart(ctx, {
-                                    const data = {
-                                        // labels: [downside2, downside1, strike, call_BE, upside2],
-                                        labels: window.labels,
-                                        datasets: [{
-                                            label: expiry_date + optionType,
-                                            pointBorderColor: "black",
-                                            fill: false,
-                                            data: window.data,
-                                            // data: [{x: downside2, y: -10915}, {x: downside1, y: -10915}, {x: strike, y: -10915}, {x: call_BE, y: 0}, {x: upside2, y: 500}],
-
-                                            backgroundColor: correct_colors,
-                                            borderColor: [
-                                                'black',
-                                                'black',
-                                                'black',
-                                                'black',
-                                                'black',
-                                                'black'
-                                            ],
-                                            borderWidth: 7
-                                        }],
-
-
-                                    };
-                                    const config = {
-                                        type: 'line',
-                                        data,
-                                        options: {
-                                            plugins: {
-                                                title: {
-                                                    display: true,
-                                                    text: optionMethod + expiry_date + optionType,
-                                                    color: "white",
-                                                    font: {
-                                                        size: 60,
-                                                        family: 'DM Sans',
-                                                    },
-
-                                                },
-                                                legend: {
-                                                    display: false
-                                                }
-                                            },
-                                            scales: {
-                                                x: {
-
-                                                    grid: {
-                                                        display: true,
-                                                        color: 'white',
-                                                        lineWidth: 2
-
-                                                    },
-                                                    ticks: {
-                                                        color: "white",
-                                                        font: {
-                                                            size: 20,
-                                                            family: 'DM Sans',
-
-                                                        }
-                                                    },
-                                                    title: {
-                                                        display: true,
-                                                        text: 'Share Price ($)',
-                                                        color: 'white',
-                                                        font: {
-                                                            size: 26,
-                                                            family: 'DM Sans',
-
-                                                        }
-
-                                                    },
-
-                                                },
-                                                y: {
-
-                                                    grid: {
-                                                        display: true,
-                                                        color: 'white',
-                                                        lineWidth: 2
-                                                    },
-                                                    ticks: {
-                                                        min: 15000,
-                                                        max: upside1 * 2,
-                                                        color: "white",
-                                                        font: {
-                                                            size: 20,
-                                                            family: 'DM Sans',
-                                                        }
-                                                    },
-
-
-                                                    title: {
-                                                        display: true,
-                                                        text: "P&L ($)",
-                                                        color: 'white',
-                                                        font: {
-                                                            size: 26,
-                                                            family: 'DM Sans',
-
-                                                        }
-
-                                                    },
-                                                }
-
-
-                                            }
-
-                                        }
-
-                                    };
-
-
-                                    window.myChart = new Chart(
-                                        document.getElementById('window.myChart'),
-                                        config
-                                    );
-
-
-                                };
-
-                            }
-
-                        }
-                        selectedRow();
-
-                    }
-
-                );
-            </script>
-
+            <div>
+                <script>$(document).ready(function() {
+                    var expiry = "{{dates[expiry]}} "
+                    var price = "{{price}}"
+                    selectedRow(price,expiry)
+                });</script>
+            </div>
         </div>
 
 
@@ -537,7 +185,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
             integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
         </script>
-
+        <script type="text/javascript" src="static/scripts.js"></script>
 </body>
 
 </html>
